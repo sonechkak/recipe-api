@@ -1,0 +1,11 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/src
+        command: >
+            sh -c "python src/manage.py runserver 0.0.0.0:8000"
