@@ -10,6 +10,7 @@ python = "^3.13"
 djangorestframework = "^3.15.2"
 python-dotenv = "^1.0.1"
 django = "^5.1.5"
+flake8 = "^7.1.1"
 
 
 [build-system]
