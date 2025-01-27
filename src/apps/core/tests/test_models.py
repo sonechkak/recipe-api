@@ -1,5 +1,4 @@
 import os
-import unittest
 
 import django
 from django.test import TestCase
@@ -35,3 +34,13 @@ class ModelTests(TestCase):
         """Тест создания пользователя с некорректным email."""
         with self.assertRaises(ValueError):
             User.objects.create_user(None, "testpass123")
+
+    def test_create_new_superuser(self):
+        """Тест создания суперпользователя."""
+        user = User.objects.create_superuser(
+            "test@appdev.com",
+            "testpass123"
+        )
+
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.is_staff)

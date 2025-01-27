@@ -8,14 +8,24 @@ from django.db import models
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
-        """Создает и возвращает нового пользователя"""
+        """Создает и возвращает нового пользователя."""
         if not email:
             raise ValueError('Email обязателен.')
         user = self.model(email=self.normalize_email(email), **extra_fields)
-        user.set_password(password) # хэширует пароль
-        user.save(using=self._db) # сохраняет в БД, используя текущую БД
+        user.set_password(password)  # хэширует пароль
+        user.save(using=self._db)  # сохраняет в БД, используя текущую БД
 
         return user
+
+    def create_superuser(self, email, password):
+        """Создает и возвращает суперпользователя."""
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+
+        return user
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """Кастомная модель пользователя, использует email в качестве уникального идентификатора вместо username"""
@@ -26,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email' # email в качестве уникального идентификатора
+    USERNAME_FIELD = 'email'  # email в качестве уникального идентификатора
 
     class Meta:
         verbose_name = 'Пользователь'
