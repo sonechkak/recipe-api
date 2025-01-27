@@ -9,7 +9,9 @@ from django.db import models
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """Создает и возвращает нового пользователя"""
-        user = self.model(email=email, **extra_fields)
+        if not email:
+            raise ValueError('Email обязателен.')
+        user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password) # хэширует пароль
         user.save(using=self._db) # сохраняет в БД, используя текущую БД
 
@@ -25,3 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email' # email в качестве уникального идентификатора
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
