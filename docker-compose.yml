@@ -12,10 +12,10 @@ services:
                    python src/manage.py migrate &&
                    python src/manage.py runserver 0.0.0.0:8000"
         environment:
-            - DB_HOST=${DB_HOST}
+            - DB_HOST=db
             - DB_NAME=${DB_NAME}
             - DB_USER=${DB_USER}
-            - DB_PASS=${DB_PASSWORD}
+            - DB_PASSWORD=${DB_PASSWORD}
         depends_on:
             - db
         networks:
