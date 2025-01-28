@@ -7,8 +7,8 @@ User = get_user_model()
 class ModelTests(BaseTestCase):
     def test_create_user_with_email_successful(self):
         """Тест создания пользователя с email."""
-        email = "test@app.com"
-        password = "testpass123"
+        email = 'test@app.com'
+        password = 'testpass123'
         user = User.objects.create_user(
             email=email,
             password=password
@@ -19,21 +19,21 @@ class ModelTests(BaseTestCase):
 
     def test_new_user_email_normalized(self):
         """Тест нормализации email."""
-        email = "test@APP.COM"
-        user = User.objects.create_user(email, "testpass123")
+        email = 'test@APP.COM'
+        user = User.objects.create_user(email, 'testpass123')
 
         self.assertEqual(user.email, email.lower())
 
     def test_new_user_invalid_email(self):
         """Тест создания пользователя с некорректным email."""
         with self.assertRaises(ValueError):
-            User.objects.create_user(None, "testpass123")
+            User.objects.create_user(None, 'testpass123')
 
     def test_create_new_superuser(self):
         """Тест создания суперпользователя."""
         user = User.objects.create_superuser(
-            "test@appdev.com",
-            "testpass123"
+            'test@appdev.com',
+            'testpass123'
         )
 
         self.assertTrue(user.is_superuser)

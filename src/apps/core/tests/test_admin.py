@@ -12,26 +12,40 @@ class AdminSiteTests(BaseTestCase):
         """Выполняется перед каждым тестом."""
         self.client = Client()  # создаем клиента
         self.admin_user = User.objects.create_superuser(
-            email="test@appdev.com",
-            password="test123"
+            email='test@appdev.com',
+            password='test123'
         )
         self.client.force_login(self.admin_user)
         self.user = User.objects.create_user(
-            email="test@app.com",
-            password="test123",
-            name="Test User Full Name"
+            email='test@app.com',
+            password='test123',
+            name='Test User Full Name'
         )
 
     def test_users_listed_on_user_page(self):
         """Пользователи отображаются в списке пользователей."""
         from django.urls import get_resolver
-        print("Available URL patterns:")
+        print('Available URL patterns:')
         for pattern in get_resolver().reverse_dict.keys():
             if isinstance(pattern, str):
                 print(pattern)
 
-        url = reverse("admin:core_user_changelist")
+        url = reverse('admin:core_user_changelist')
         res = self.client.get(url)
 
         self.assertContains(res, self.user.name)
         self.assertContains(res, self.user.email)
+
+    def test_user_change_page(self):
+        """Страница изменения пользователя."""
+        url = reverse('admin:core_user_change', args=[self.user.id])
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_create_user_page(self):
+        """Страница создания пользователя."""
+        url = reverse('admin:core_user_add')
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
