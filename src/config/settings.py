@@ -8,9 +8,8 @@ load_dotenv()
 
 # Paths
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0, str(BASE_DIR))
-sys.path.insert(0, str(BASE_DIR / "src"/ "apps"))
-sys.path.insert(0, str(BASE_DIR / "src"/ "apps" / "core"))
+sys.path.insert(0, str(BASE_DIR / "src"))
+sys.path.insert(0, str(BASE_DIR / "src" / "apps"))
 
 # Load environment variables
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -19,13 +18,16 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 # Application definition
 INSTALLED_APPS = [
-    "core",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "core",
+    "user",
 ]
 
 MIDDLEWARE = [

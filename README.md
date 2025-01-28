@@ -71,7 +71,7 @@ docker compose exec web python src/manage.py createsuperuser
 
 Для запуска тестов используйте команду:
 ```bash
- docker compose exec web sh -c "python src/manage.py test tests && flake8"
+docker compose run --rm web sh -c "python src/manage.py test core && python src/manage.py test user && flake8"
 ```
 
 ## Лицензия
