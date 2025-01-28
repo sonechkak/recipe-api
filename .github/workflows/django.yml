@@ -19,5 +19,14 @@ jobs:
       uses: snok/install-poetry@v1
     - name: Install Dependencies
       run: poetry install --no-root
-    - name: Run Tests
-      run: poetry run python src/manage.py test
+    - name: Wait for Database
+      run: |
+        while ! nc -z db 5432; do
+          sleep 1
+        done
+    - name: Run Migrations
+      run: poetry run python src/manage.py migrate
+    - name: Run Test for core app
+      run: poetry run python src/manage.py test core
+    - name: Run Test for user app
+      run: poetry run python src/manage.py test user
