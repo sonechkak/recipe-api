@@ -1,16 +1,10 @@
-import os
-
-import django
-from django.test import TestCase
 from django.contrib.auth import get_user_model
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.config.settings")
-django.setup()
+from .test_base import BaseTestCase
 
 User = get_user_model()
 
 
-class ModelTests(TestCase):
+class ModelTests(BaseTestCase):
     def test_create_user_with_email_successful(self):
         """Тест создания пользователя с email."""
         email = "test@app.com"

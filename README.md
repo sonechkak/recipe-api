@@ -46,20 +46,20 @@ SQL_PORT=5432
 
 3. Запустите проект через Docker Compose:
 ```bash
-docker-compose up --build
+docker compose up --build --force-recreate
 ```
 
 4. Примените миграции:
 ```bash
-docker-compose exec web python src/manage.py migrate
+docker compose exec web python src/manage.py migrate
 ```
 
 5. Создайте суперпользователя (опционально):
 ```bash
-docker-compose exec web python src/manage.py createsuperuser
+docker compose exec web python src/manage.py createsuperuser
 ```
 
-Приложение будет доступно по адресу: http://localhost:8000
+Приложение будет доступно по адресу: http://127.0.0.1:8000
 
 ## Документация API
 
@@ -71,13 +71,7 @@ docker-compose exec web python src/manage.py createsuperuser
 
 Для запуска тестов используйте команду:
 ```bash
-docker-compose exec web python -m unittest discover -s src/apps/core/tests
-```
-
-Также можно запустить тесты для конкретного приложения или конкретного тестового файла:
-```bash
-# Запуск тестов конкретного приложения
-docker-compose exec web python -m unittest discover -s src/apps/your_app/tests
+ docker compose exec web sh -c "python src/manage.py test tests && flake8"
 ```
 
 ## Лицензия

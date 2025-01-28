@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    """Кастомная модель пользователя, использует email в качестве уникального идентификатора вместо username"""
+    """Кастомная модель пользователя, использует email в качестве уникального идентификатора вместо username."""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
