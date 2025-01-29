@@ -17,6 +17,17 @@ class UserSerializer(serializers.ModelSerializer):
         """Создание нового пользователя с хэш-паролем."""
         return User.objects.create_user(**validated_data)
 
+    def update(self, instance, validated_data):
+        """Обновление пароля пользователя."""
+        password = validated_data.pop('password', None)
+        user = super().update(instance, validated_data)
+
+        if password:
+            user.set_password(password)
+            user.save()
+
+        return user
+
 
 class AuthTokenSerializer(serializers.Serializer):
     """Сериализатор для авторизации пользователя с токеном."""

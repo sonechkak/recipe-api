@@ -1,0 +1,9 @@
+[flake8]
+exclude =
+    migrations,
+    .git,
+    __pycache__,
+    .pytest_cache
+    settings.py
+
+max-line-length = 120
