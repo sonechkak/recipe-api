@@ -27,10 +27,15 @@ jobs:
         python-version: "3.13"
     - name: Install Poetry
       uses: snok/install-poetry@v1
+    - name: Clear Poetry cache
+      run: poetry cache clear --all pypi
     - name: Install Dependencies
       run: poetry install --sync
+    - name: Check Django installation
+      run: poetry run python -c "import django; print(django.__version__)"
     - name: Run Tests
       env:
+        PYTHONPATH: ./src
         SECRET_KEY: test
         POSTGRES_DB: recipe
         POSTGRES_USER: sonya
