@@ -35,6 +35,6 @@ jobs:
         POSTGRES_DB: recipe
         POSTGRES_USER: sonya
         POSTGRES_PASSWORD: sonya
-        POSTGRES_HOST: db
+        POSTGRES_HOST: "127.0.0.1"
         POSTGRES_PORT: 5432
       run: poetry run python src/manage.py test core && python src/manage.py test user
