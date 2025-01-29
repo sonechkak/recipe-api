@@ -29,11 +29,12 @@ jobs:
       uses: snok/install-poetry@v1
     - name: Install Dependencies
       run: poetry install --no-root
-    - name: Run Test for core app
+    - name: Run Tests
       env:
-        SECRET_KEY: "test"
-      run: poetry run python src/manage.py test core
-    - name: Run Test for user app
-      env:
-        SECRET_KEY: "test"
-      run: poetry run python src/manage.py test user
+        SECRET_KEY: test
+        POSTGRES_DB: recipe
+        POSTGRES_USER: sonya
+        POSTGRES_PASSWORD: sonya
+        POSTGRES_HOST: db
+        POSTGRES_PORT: 5432
+      run: poetry run python src/manage.py test core && python src/manage.py test user
