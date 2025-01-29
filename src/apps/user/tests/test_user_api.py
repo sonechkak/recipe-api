@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 
 User = get_user_model()
 CREATE_USER_URL = reverse('user:create')
+TOKEN_URL = reverse('user:token')
 
 
 def create_user(**params):
@@ -59,3 +60,45 @@ class PublicUserApiTests(TestCase):
         ).exists()
 
         self.assertFalse(user_exists)  # Проверка, что пользователя не существует.
+
+    def test_create_token_for_user(self):
+        """Тест на создание токена для пользователя."""
+        payload = {
+            'email': 'test@appdev.com',
+            'password': 'testpass',
+        }
+        create_user(**payload)
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_create_token_invalid_credentials(self):
+        """Тест на создание токена с невалидными данными."""
+        create_user(email='test@appdev.com', password='testpass')
+        payload = {
+            'email': 'test@appdev.com',
+            'password': 'wrong',
+        }
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', self.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_no_user(self):
+        """Тест на создание токена, если пользователя не существует."""
+        payload = {
+            'email': 'test@appdev.com',
+            'password': 'wrong',
+        }
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_missing_field(self):
+        """Тест на строгость полей email и password."""
+        res = self.client.post(TOKEN_URL, {'email': 'one', 'password': ''})
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
