@@ -30,9 +30,9 @@ jobs:
       run: poetry install --no-root
     - name: Run Test for core app
       env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        SECRET_KEY: "test"
       run: poetry run python src/manage.py test core
     - name: Run Test for user app
       env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        SECRET_KEY: "test"
       run: poetry run python src/manage.py test user
