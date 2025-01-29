@@ -15,7 +15,7 @@ RUN pip install poetry && \
     poetry install --no-root --no-interaction --no-ansi && \
     apk del .tmp-build-deps
 
-COPY . .
+COPY src /app
 
 RUN adduser -D sonya
 USER sonya

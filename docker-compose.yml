@@ -6,17 +6,17 @@ services:
         ports:
             - "8000:8000"
         volumes:
-            - .:/app
-        command: sleep infinity
-#        command: >
-#            sh -c "python src/manage.py wait_for_db &&
-#                   python src/manage.py migrate &&
-#                   python src/manage.py runserver 0.0.0.0:8000"
+            - ./src:/app
+        command: >
+            sh -c "python manage.py wait_for_db &&
+                   python manage.py migrate &&
+                   python manage.py runserver 0.0.0.0:8000"
         environment:
-            - DB_HOST=db
-            - DB_NAME=${DB_NAME}
-            - DB_USER=${DB_USER}
-            - DB_PASSWORD=${DB_PASSWORD}
+            POSTGRES_DB: recipe
+            POSTGRES_USER: sonya
+            POSTGRES_PASSWORD: sonya
+            POSTGRES_HOST: db
+            SECRET_KEY: "test"
         depends_on:
             - db
         networks:
@@ -24,15 +24,15 @@ services:
     db:
         image: postgres:13-alpine
         environment:
-            POSTGRES_DB: ${DB_NAME}
-            POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: recipe
+            POSTGRES_USER: sonya
+            POSTGRES_PASSWORD: sonya
         ports:
             - "5432:5432"
         networks:
             - app-network
         volumes:
-            - postgres_data:/var/lib/postgresql/data
+            - ${PWD}/postgres_data:/var/lib/postgresql/data
 networks:
     app-network:
         driver: bridge

@@ -7,9 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Paths
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0, str(BASE_DIR / "src"))
-sys.path.insert(0, str(BASE_DIR / "src" / "apps"))
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR / "apps"))
 
 # Load environment variables
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -64,11 +63,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv("DB_NAME", "recipe"),
-        "USER": os.getenv("DB_USER", "sonya"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "sonya"),
-        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-        "PORT": os.getenv("DB_PORT", 5432),
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
     }
 }
 
@@ -105,3 +104,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
 AUTH_USER_MODEL = "core.User"
+
+
+# import os
+#
+# myenv = os.getenv("MYENV")
+# if myenv == "docker":
+#     from settings.prod_settings import *
+# elif myenv == "development":
+#     from settings.dev_settings import *
+# elif myenv == "testing":
+#     from settings.test_settings import *
+# else:
+#     raise ValueError("MYENV not set properly")
