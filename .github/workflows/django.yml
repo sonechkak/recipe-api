@@ -16,6 +16,7 @@ jobs:
           POSTGRES_DB: recipe
           POSTGRES_USER: sonya
           POSTGRES_PASSWORD: sonya
+          POSTGRES_HOST: db
         ports:
           - 5432:5432
     steps:
