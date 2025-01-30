@@ -32,4 +32,4 @@ jobs:
     - name: Run Tests
       env:
         SECRET_KEY: "test"
-      run: poetry run python src/manage.py test core && poetry run python src/manage.py test user
+      run: poetry run python src/manage.py test core && poetry run python src/manage.py test user && poetry run python src/manage.py test recipe
