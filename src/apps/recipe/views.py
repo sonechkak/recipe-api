@@ -14,10 +14,6 @@ class TagViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()
 
-    def _params_to_ints(self, qs):
-        """Преобразует список строковых идентификаторов в список целых чисел."""
-        return [int(str_id) for str_id in qs.split(',')]
-
     def get_queryset(self):
         """Возвращает теги для текущего пользователя."""
         queryset = self.queryset
@@ -26,3 +22,7 @@ class TagViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(recipe__isnull=False)
 
         return queryset.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        """Создание нового тега."""
+        serializer.save(user=self.request.user)

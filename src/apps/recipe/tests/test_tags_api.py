@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 from core.models import Tag
 from recipe.serializers import TagSerializer
 
+
 User = get_user_model()
 TAGS_URL = reverse('recipe:tag-list')
 
@@ -62,3 +63,22 @@ class PrivateTagsAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)  # проверка количества тегов
         self.assertEqual(res.data[0]['name'], tag.name)  # проверка имени тега
+
+    def test_create_tag_successful(self):
+        """Тест на создание тега."""
+        payload = {'name': 'Тестовый тег'}
+        self.client.post(TAGS_URL, payload)
+
+        exists = Tag.objects.filter(
+            user=self.user,
+            name=payload['name']
+        ).exists()
+
+        self.assertTrue(exists)  # проверка наличия тега
+
+    def test_create_tag_invalid(self):
+        """Тест на создание тега с неверными данными."""
+        payload = {'name': ''}
+        res = self.client.post(TAGS_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
