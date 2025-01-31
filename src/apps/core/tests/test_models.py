@@ -62,3 +62,14 @@ class ModelTests(BaseTestCase):
         )
 
         self.assertEqual(str(ingredient), ingredient.name)  # сравнение строк
+
+    def test_recipe_str(self):
+        """Тестирование рецепта."""
+        recipe = models.Recipe.objects.create(
+            user=sample_user(),
+            title='Стейк со сливочным соусом',
+            time_minutes=5,
+            price=5.00
+        )
+
+        self.assertEqual(str(recipe), recipe.title)
