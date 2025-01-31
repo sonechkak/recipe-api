@@ -48,3 +48,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Создание нового объекта."""
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        """Возвращает правильный сериализатор."""
+        if self.action == 'retrieve':
+            return serializers.RecipeDetailSerializer
+
+        return self.serializer_class
