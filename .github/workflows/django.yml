@@ -29,6 +29,12 @@ jobs:
       uses: snok/install-poetry@v1
     - name: Install Dependencies
       run: poetry install --sync
+    - name: Create a directory for static files
+      run: mkdir -p /vol/web/static && mkdir -p /vol/web/media
+    - name: Change ownership of the directory
+      run: chown -R sonya:sonya /vol
+    - name: Change permissions of the directory
+      run: RUN chmod -R 755 /vol/web
     - name: Run Tests
       env:
         SECRET_KEY: "test"
