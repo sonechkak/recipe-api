@@ -31,10 +31,10 @@ jobs:
       run: poetry install --sync
     - name: Create a directory for static and media files
       run: mkdir -p ./vol/web/static && mkdir -p ./vol/web/media
-    - name: Create user
-      run: adduser -D sonya
-    - name: Change ownership of the directory
-      run:  chown -R sonya:sonya ./vol/
+#    - name: Create user
+#      run: adduser -D sonya
+#    - name: Change ownership of the directory
+#      run:  chown -R sonya:sonya ./vol/
     - name: Change permissions of the directory
       run: chmod -R 755 ./vol/web/
     - name: Wait for PostgreSQL to be ready
