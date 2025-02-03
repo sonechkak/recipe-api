@@ -29,12 +29,12 @@ jobs:
       uses: snok/install-poetry@v1
     - name: Install Dependencies
       run: poetry install --sync
-    - name: Create a directory for static files
-      run: mkdir -p /vol/web/static && mkdir -p /vol/web/media
+    - name: Create a directory for static and media files
+      run: mkdir -p ./static && mkdir -p ./media
     - name: Change ownership of the directory
-      run: chown -R sonya:sonya /vol
+      run:  sudo chown -R $USER:$USER ./static ./media
     - name: Change permissions of the directory
-      run: chmod -R 755 /vol/web
+      run: chmod -R 755 ./static ./media
     - name: Wait for PostgreSQL to be ready
       run: sleep 10
     - name: Run Tests
