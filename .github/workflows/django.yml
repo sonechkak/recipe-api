@@ -34,7 +34,7 @@ jobs:
     - name: Change ownership of the directory
       run:  sudo chown -R $USER:$USER ./vol/web/
     - name: Change permissions of the directory
-      run: chmod -R 755 ./vol/web/
+      run: chmod -R 755 /vol/
     - name: Wait for PostgreSQL to be ready
       run: sleep 10
     - name: Run Tests
