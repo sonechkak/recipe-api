@@ -28,20 +28,17 @@ jobs:
     - name: Install Poetry
       uses: snok/install-poetry@v1
     - name: Install Dependencies
-      run: "poetry install --sync"
+      run: poetry install --sync
     - name: Create a directory for static files
-      run: "mkdir -p /vol/web/static && mkdir -p /vol/web/media"
+      run: mkdir -p /vol/web/static && mkdir -p /vol/web/media
     - name: Change ownership of the directory
-      run: "chown -R sonya:sonya /vol"
+      run: chown -R sonya:sonya /vol
     - name: Change permissions of the directory
-      run: "chmod -R 755 /vol/web"
+      run: chmod -R 755 /vol/web
     - name: Wait for PostgreSQL to be ready
-      run: "sleep 10"
+      run: sleep 10
     - name: Run Tests
       env:
         SECRET_KEY: "test"
         DATABASE_URL: "postgres://sonya:sonya@db:5432/recipe"
-      run: |
-      poetry run python src/manage.py test core
-      poetry run python src/manage.py test user
-      poetry run python src/manage.py test recipe
+      run: poetry run python src/manage.py test core && poetry run python src/manage.py test user && poetry run python src/manage.py test recipe
