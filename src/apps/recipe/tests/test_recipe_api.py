@@ -115,7 +115,7 @@ class PrivateRecipeAPITests(TestCase):
     def test_create_basic_recipe(self):
         """Тест на создание рецепта."""
         payload = {
-            'title': 'Chocolate cheesecake',
+            'title': 'Шоколадный чизкейк',
             'time_minutes': 30,
             'price': 5.00
         }
@@ -129,10 +129,10 @@ class PrivateRecipeAPITests(TestCase):
 
     def test_create_recipe_with_tags(self):
         """Тест на создание рецепта с тегами."""
-        tag1 = sample_tag(user=self.user, name='Vegan')
-        tag2 = sample_tag(user=self.user, name='Dessert')
+        tag1 = sample_tag(user=self.user, name='Веган')
+        tag2 = sample_tag(user=self.user, name='Дессерт')
         payload = {
-            'title': 'Avocado lime cheesecake',
+            'title': 'Лаймовый чизкейк с авокадо',
             'tags': [tag1.id, tag2.id],
             'time_minutes': 60,
             'price': 20.00
@@ -141,3 +141,42 @@ class PrivateRecipeAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipe = Recipe.objects.get(id=res.data['id'])
+
+    def test_partial_update_recipe(self):
+        """Тест на обновление рецепта."""
+        recipe = sample_recipe(user=self.user)
+        recipe.tags.add(sample_tag(user=self.user))
+        new_tag = sample_tag(user=self.user, name='Карри')
+        payload = {
+            'title': 'Курица карри',
+            'tags': [new_tag.id]
+        }
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload)
+
+        recipe.refresh_from_db()
+        self.assertEqual(recipe.title, payload['title'])  # Сравнение названия рецепта
+
+        tags = recipe.tags.all()
+        self.assertEqual(len(tags), 1)  # Проверка на количество тегов
+        self.assertIn(new_tag, tags)  # Проверка на наличие нового тега
+
+    def test_full_update_recipe(self):
+        """Тест на полное обновление рецепта."""
+        recipe = sample_recipe(user=self.user)
+        recipe.tags.add(sample_tag(user=self.user))
+        payload = {
+            'title': 'Спагетти карбонара',
+            'time_minutes': 25,
+            'price': 15.00
+        }
+        url = detail_url(recipe.id)
+        res = self.client.put(url, payload)
+
+        recipe.refresh_from_db()
+        self.assertEqual(recipe.title, payload['title'])
+        self.assertEqual(recipe.time_minutes, payload['time_minutes'])
+        self.assertEqual(recipe.price, payload['price'])
+
+        tags = recipe.tags.all()
+        self.assertEqual(len(tags), 0)

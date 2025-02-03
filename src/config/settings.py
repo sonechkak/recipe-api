@@ -1,6 +1,8 @@
 import os
 import sys
 from pathlib import Path
+
+from django.template.context_processors import media
 from dotenv import load_dotenv
 
 
@@ -98,7 +100,12 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+MEDIA = "/media/"
+
+MEDIA_ROOT = "/vol/web/media"  # в контейнере
+STATIC_ROOT = "/vol/web/static"
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
