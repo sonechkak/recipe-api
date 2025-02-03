@@ -227,4 +227,47 @@ class RecipeImageUploadTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_recipes_by_tags(self):
-        """Тест """
+        """Тест на получение рецептов по тегам."""
+        recipe1 = sample_recipe(user=self.user, title='Тайский карри с тофу')
+        recipe2 = sample_recipe(user=self.user, title='Бургер')
+        tag1 = sample_tag(user=self.user, name='Веган')
+        tag2 = sample_tag(user=self.user, name='Мясо')
+        recipe1.tags.add(tag1)
+        recipe2.tags.add(tag2)
+        recipe3 = sample_recipe(user=self.user, title='Суп')
+
+        res = self.client.get(
+            RECIPES_URL,
+            {'tags': f'{tag1.id},{tag2.id}'}
+        )
+
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
+
+    def test_filter_recipes_by_ingredients(self):
+        """Тест на возврат рецептов по ингредиентам."""
+        recipe1 = sample_recipe(user=self.user, title='Холодник')
+        recipe2 = sample_recipe(user=self.user, title='Борщ')
+        ingredient1 = sample_ingredient(user=self.user, name='Огурец')
+        ingredient2 = sample_ingredient(user=self.user, name='Свекла')
+        recipe1.ingredients.add(ingredient1)
+        recipe2.ingredients.add(ingredient2)
+        recipe3 = sample_recipe(user=self.user, title='Стейк с картошкой')
+
+        res = self.client.get(
+            RECIPES_URL,
+            {'ingredients': f'{ingredient1.id},{ingredient2.id}'}
+        )
+
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
